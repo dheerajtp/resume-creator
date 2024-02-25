@@ -25,6 +25,24 @@ const steps = {
       placeholder: "linkedin.com/id",
     },
   ],
+  two: [
+    {
+      name: "collegeName",
+      placeholder: "College Name",
+    },
+    {
+      name: "collegeCourse",
+      placeholder: "College Course",
+    },
+    {
+      name: "location",
+      placeholder: "bangalore,india",
+    },
+    {
+      name: "year",
+      placeholder: "2019 - Present",
+    },
+  ],
 };
 
 export default steps;

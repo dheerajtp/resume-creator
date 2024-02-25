@@ -5,8 +5,6 @@ import constantImages from "../../constants/image";
 
 const Header = () => {
   const { user } = useUser();
-  console.log(user)
-  //   user?.imageUrl ??
   return (
     <View style={styles.headerContent}>
       <Image

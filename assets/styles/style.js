@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
   },
   headerContent: {
     display: "flex",
-    justifyContent: "space-between",
-    flexDirection: "row",
+    justifyContent: "flex-end",
+    flexDirection: "column",
     alignItems: "center",
   },
   headerText: {
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   formContainer: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 8,
+    marginTop: 10,
     alignContent: "center",
   },
   errorText: {

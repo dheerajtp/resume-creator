@@ -5,8 +5,13 @@ import FormField from "../common/FormField";
 import steps from "../../data/steps";
 import { View } from "react-native";
 import Button from "../common/Button";
+import { useSelector, useDispatch } from "react-redux";
+import SignOut from "../common/SignOut";
+import resumeServices from "../../services/resume";
+import { addStep } from "../../store/slices/steps";
 
 const StepOne = () => {
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -15,8 +20,33 @@ const StepOne = () => {
     resolver: yupResolver(stepOneSchema),
   });
 
+  const { value } = useSelector((state) => state.user);
+  
   const onSubmit = async (data) => {
-    console.log(data);
+    const {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      githubUrl = "",
+      linkedInUrl = "",
+    } = data;
+    let valueTyped = {
+      uuid: value?.user?.uuid,
+      step_one: {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        githubUrl,
+        linkedInUrl,
+      },
+    };
+
+    let response = await resumeServices.createStep({ ...valueTyped });
+    if (response.status) {
+      dispatch(addStep({ key: "step_one" }));
+    }
   };
 
   return (
@@ -32,7 +62,8 @@ const StepOne = () => {
           />
         );
       })}
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Button title="Next" onPress={handleSubmit(onSubmit)} />
+      <SignOut />
     </View>
   );
 };

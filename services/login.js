@@ -12,10 +12,7 @@ const createUser = async (
     const uuid = Crypto.randomUUID();
     const dbRef = ref(firebaseConfigurations.database);
     let result = await get(child(dbRef, `users/${firstName} ${lastName}`));
-    console.log(result);
-    console.log(result.exists());
     if (!result.exists()) {
-      console.log("inside create", firstName, lastName);
       set(
         ref(
           firebaseConfigurations.database,
