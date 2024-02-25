@@ -12,19 +12,45 @@ import * as WebBrowser from "expo-web-browser";
 import { useOAuth } from "@clerk/clerk-expo";
 import useWarmUpBrowser from "../hooks/useWarmUpBrowser";
 import React from "react";
+import loginServices from "../services/login";
+import { addUser } from "../store/slices/user";
+import { useDispatch } from "react-redux";
 
 WebBrowser.maybeCompleteAuthSession();
 
 const Login = () => {
   useWarmUpBrowser();
+  const dispatch = useDispatch();
   const { startOAuthFlow } = useOAuth({ strategy: "oauth_google" });
-
   const onPress = React.useCallback(async () => {
     try {
-      const { createdSessionId, setActive } = await startOAuthFlow();
-
-      if (createdSessionId) {
-        setActive({ session: createdSessionId });
+      const result = await startOAuthFlow();
+      console.log(result)
+      if (result.createdSessionId) {
+        const {
+          firstName = "",
+          hasImage = false,
+          imageUrl = "",
+          lastName = "",
+        } = result.signIn.userData;
+        let insertIntoFirebase = await loginServices.createUser(
+          firstName,
+          hasImage,
+          imageUrl,
+          lastName
+        );
+        if (insertIntoFirebase.status == true) {
+          result.setActive({ session: result.createdSessionId });
+          dispatch(
+            addUser({
+              uuid: insertIntoFirebase.uuid,
+              name: `${firstName} ${lastName}`,
+              imageUrl,
+            })
+          );
+        } else {
+          ToastAndroid.show("Login Failed..!", ToastAndroid.SHORT);
+        }
       } else {
         ToastAndroid.show("Login Failed..!", ToastAndroid.SHORT);
       }

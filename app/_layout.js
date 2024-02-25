@@ -1,6 +1,8 @@
 import { ClerkProvider } from "@clerk/clerk-expo";
 import { Slot } from "expo-router";
 import tokenCache from "../utils/token";
+import { Provider } from "react-redux";
+import store from "../store/store";
 
 const HomeLayout = () => {
   return (
@@ -8,7 +10,9 @@ const HomeLayout = () => {
       publishableKey={process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY}
       tokenCache={tokenCache}
     >
-      <Slot />
+      <Provider store={store}>
+        <Slot />
+      </Provider>
     </ClerkProvider>
   );
 };

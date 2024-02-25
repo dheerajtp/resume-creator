@@ -1,5 +1,9 @@
 import { StyleSheet } from "react-native";
 import color from "../../constants/color";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
 
 const styles = StyleSheet.create({
   container: {
@@ -39,6 +43,57 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Montserrat-Medium",
     fontSize: 17,
+  },
+  homeContainer: {
+    flex: 1,
+    padding: 8,
+  },
+  headerContainer: {
+    position: "absolute",
+    zIndex: 10,
+    padding: 10,
+    width: "100%",
+    paddingHorizontal: 20,
+  },
+  userProfileLogo: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+  },
+  headerContent: {
+    display: "flex",
+    justifyContent: "space-between",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  headerText: {
+    fontSize: 10,
+    fontFamily: "Montserrat-Medium",
+  },
+  input: {
+    fontSize: 18,
+    borderRadius: 6,
+    lineHeight: 22,
+    padding: 5,
+    paddingHorizontal: 10,
+    borderWidth: 2,
+    borderColor: "#dee1e2",
+    color: "rgb(14, 14, 16)",
+    backgroundColor: "#dee1e2",
+    display: "flex",
+    height: hp(8),
+    marginBottom: 8,
+    width: wp("80%"),
+  },
+  formContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 8,
+    alignContent: "center",
+  },
+  errorText: {
+    marginBottom: 4,
+    color: "red",
   },
 });
 
