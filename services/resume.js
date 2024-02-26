@@ -9,11 +9,11 @@ const createStep = async ({
   step_four = {},
 }) => {
   try {
-    console.log(uuid, step_one, "inside create step");
+    const steps = { step_one, step_two, step_three, step_four };
+
     const dbRef = ref(firebaseConfigurations.database);
     let result = await get(child(dbRef, `steps/${uuid}`));
-    console.log(result, "result");
-    console.log(result.exists(), "exists or not");
+
     if (!result.exists()) {
       console.log("inside results doesn't exist");
       await set(ref(firebaseConfigurations.database, "steps/" + uuid), {
@@ -23,6 +23,17 @@ const createStep = async ({
         step_three,
         step_four,
       });
+    } else {
+      const data = result.val();
+      const nonEmptyStepKeys = Object.keys(steps).filter(
+        (key) => Object.keys(steps[key]).length > 0
+      );
+
+      if (nonEmptyStepKeys.length > 0) {
+        data[nonEmptyStepKeys[0]] = steps[nonEmptyStepKeys[0]];
+        const dbRef = ref(firebaseConfigurations.database, `steps/${uuid}`);
+        await set(dbRef, data);
+      }
     }
     return {
       status: true,

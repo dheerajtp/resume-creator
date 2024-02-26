@@ -95,6 +95,10 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     color: "red",
   },
+  coursesText: {
+    textAlign: "center",
+    padding: 4,
+  },
 });
 
 export default styles;

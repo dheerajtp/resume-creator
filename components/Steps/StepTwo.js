@@ -1,6 +1,6 @@
-import { View } from "react-native";
+import { Text, View, ToastAndroid } from "react-native";
 import steps from "../../data/steps";
-import { useForm } from "react-hook-form";
+import { useForm, reset } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import stepTwoSchema from "../../utils/validators/stepTwo";
 import FormField from "../common/FormField";
@@ -10,15 +10,19 @@ import SignOut from "../common/SignOut";
 import resumeServices from "../../services/resume";
 import { addStep } from "../../store/slices/steps";
 import React from "react";
-import { FontAwesome6 } from "@expo/vector-icons";
+import { FontAwesome6, AntDesign } from "@expo/vector-icons";
+import styles from "../../assets/styles/style";
+import Input from "../common/Input";
+import * as Crypto from "expo-crypto";
 
 const StepTwo = () => {
+  const [courses, setCourses] = React.useState([]);
   const dispatch = useDispatch();
-  const [courses, setCourses] = React.useState([steps.two]); // Initialize with the first set of fields
   const {
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: yupResolver(stepTwoSchema),
   });
@@ -26,46 +30,95 @@ const StepTwo = () => {
   const { value } = useSelector((state) => state.user);
 
   const onSubmit = async (data) => {
-    const { collegeName, collegeCourse, location, year } = data;
-    let valueTyped = {
-      uuid: value?.user?.uuid,
-      step_two: {
-        collegeName,
+    console.log("onSubmit called");
+    console.log(data);
+    reset();
+    const { collegeCourse, collegeName, location, year } = data;
+    setCourses((prev) => [
+      ...prev,
+      {
+        id: Crypto.randomUUID(),
         collegeCourse,
+        collegeName,
         location,
         year,
       },
-    };
+    ]);
+  };
 
-    let response = await resumeServices.createStep({ ...valueTyped });
-    if (response.status) {
-      dispatch(addStep({ key: "step_two" }));
+  const addCourse = async () => {
+    if (courses.length <= 0) {
+      ToastAndroid.show("Please Add Courses..!", ToastAndroid.SHORT);
+      return;
+    } else {
+      let data = {
+        uuid: value?.user?.uuid,
+        step_two: courses,
+      };
+      // resumeServices.createStep
+      let response = await resumeServices.createStep({ ...data });
+      if (response.status) {
+        dispatch(addStep({ key: "step_two" }));
+      }
     }
   };
 
-  const addCourse = () => {
-    setCourses((prevCourses) => [...prevCourses, steps.two]);
+  const deleteCourse = (id) => {
+    let newCourses = courses.filter((item) => item.id != id);
+    setCourses(newCourses);
   };
 
   return (
     <View>
-      {courses.map((course, courseIndex) => (
-        <View key={courseIndex}>
-          {course.map((item, index) => (
-            <FormField
-              name={item.name}
-              control={control}
-              errors={errors}
-              placeholder={item.placeholder}
-              key={index}
+      {steps.two.map((item, index) => {
+        return (
+          <FormField
+            name={item.name}
+            control={control}
+            errors={errors}
+            placeholder={item.placeholder}
+            key={index}
+          />
+        );
+      })}
+      <Button
+        title={
+          <FontAwesome6
+            name="add"
+            size={24}
+            color="black"
+            //
+          />
+        }
+        onPress={() => handleSubmit(onSubmit)()}
+      />
+      <View style={{ padding: 5 }}></View>
+      {courses.map((item) => {
+        return (
+          <View key={item.id}>
+            <Input value={item?.collegeName} />
+            <Input value={item?.collegeCourse} />
+            <Input value={item?.location} />
+            <Input value={item?.year} />
+            <Button
+              title={
+                <AntDesign
+                  name="delete"
+                  size={24}
+                  color="black"
+                  //
+                />
+              }
+              onPress={() => deleteCourse(item.id)}
             />
-          ))}
-        </View>
-      ))}
-      <View style={{ padding: 5 }}>
-        <FontAwesome6 name="add" size={24} color="black" onPress={addCourse} />
+            <Text>{"\n"}</Text>
+          </View>
+        );
+      })}
+      <View>
+        <Button title="Next" type="submit" onPress={addCourse} />
+        <Button title="Previous" />
       </View>
-      <Button title="Next" onPress={handleSubmit(onSubmit)} />
       <SignOut />
     </View>
   );
