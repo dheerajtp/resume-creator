@@ -14,7 +14,6 @@ const stepSlice = createSlice({
   initialState,
   reducers: {
     addStep: (state, action) => {
-      console.info(action);
       state.value[action.payload.key] = true;
     },
   },

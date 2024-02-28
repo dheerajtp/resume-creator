@@ -99,6 +99,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 4,
   },
+  marginVertical: {
+    marginVertical: 8,
+  },
 });
 
 export default styles;

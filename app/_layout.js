@@ -3,6 +3,7 @@ import { Slot } from "expo-router";
 import tokenCache from "../utils/token";
 import { Provider } from "react-redux";
 import store from "../store/store";
+import { ModalPortal } from "react-native-modals";
 
 const HomeLayout = () => {
   return (
@@ -12,6 +13,7 @@ const HomeLayout = () => {
     >
       <Provider store={store}>
         <Slot />
+        <ModalPortal />
       </Provider>
     </ClerkProvider>
   );

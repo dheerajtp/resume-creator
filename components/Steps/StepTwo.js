@@ -1,6 +1,6 @@
 import { Text, View, ToastAndroid } from "react-native";
 import steps from "../../data/steps";
-import { useForm, reset } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import stepTwoSchema from "../../utils/validators/stepTwo";
 import FormField from "../common/FormField";
@@ -30,10 +30,8 @@ const StepTwo = () => {
   const { value } = useSelector((state) => state.user);
 
   const onSubmit = async (data) => {
-    console.log("onSubmit called");
-    console.log(data);
-    reset();
     const { collegeCourse, collegeName, location, year } = data;
+    reset();
     setCourses((prev) => [
       ...prev,
       {
@@ -92,29 +90,30 @@ const StepTwo = () => {
         }
         onPress={() => handleSubmit(onSubmit)()}
       />
-      <View style={{ padding: 5 }}></View>
-      {courses.map((item) => {
-        return (
-          <View key={item.id}>
-            <Input value={item?.collegeName} />
-            <Input value={item?.collegeCourse} />
-            <Input value={item?.location} />
-            <Input value={item?.year} />
-            <Button
-              title={
-                <AntDesign
-                  name="delete"
-                  size={24}
-                  color="black"
-                  //
-                />
-              }
-              onPress={() => deleteCourse(item.id)}
-            />
-            <Text>{"\n"}</Text>
-          </View>
-        );
-      })}
+      <View style={{ marginVertical: 10 }}>
+        {courses.map((item) => {
+          return (
+            <View key={item.id}>
+              <Input value={item?.collegeName} />
+              <Input value={item?.collegeCourse} />
+              <Input value={item?.location} />
+              <Input value={item?.year} />
+              <Button
+                title={
+                  <AntDesign
+                    name="delete"
+                    size={24}
+                    color="black"
+                    //
+                  />
+                }
+                onPress={() => deleteCourse(item.id)}
+              />
+              <Text>{"\n"}</Text>
+            </View>
+          );
+        })}
+      </View>
       <View>
         <Button title="Next" type="submit" onPress={addCourse} />
         <Button title="Previous" />

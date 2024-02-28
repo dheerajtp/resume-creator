@@ -31,7 +31,6 @@ const createUser = async (
       uuid,
     };
   } catch (error) {
-    console.error(error);
     return { status: false };
   }
 };

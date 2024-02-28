@@ -11,7 +11,6 @@ import StepsThree from "../components/Steps/StepsThree.js";
 
 const Home = () => {
   const { value } = useSelector((state) => state.step);
-  console.log(value, "value in home");
   return (
     <CustomKeyboardView>
       <SafeAreaView style={styles.homeContainer}>
