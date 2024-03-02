@@ -14,14 +14,27 @@ import Button from "../components/common/Button";
 import React from "react";
 import * as Crypto from "expo-crypto";
 import descriptionValidation from "../utils/validators/description";
-import Input from "../components/common/Input";
 import { AntDesign } from "@expo/vector-icons";
 import CustomKeyboardView from "../components/common/CustomKeyboardView";
 import { router } from "expo-router";
+import { useLocalSearchParams } from "expo-router";
+import { useSelector, useDispatch } from "react-redux";
+import { updateDetails } from "../store/slices/experience";
 
-const ResponsibilitiesPage = ({ modalVisible, setModalVisible }) => {
-  const [descriptionDetails, setDescriptionDetails] = React.useState([]);
-
+const ResponsibilitiesPage = () => {
+  const dispatch = useDispatch();
+  const { value } = useSelector((state) => state.experience);
+  const params = useLocalSearchParams();
+  const responsibility = value?.filter((item) => item.id === params.id);
+  console.info("company experience details", responsibility);
+  const [descriptionDetails, setDescriptionDetails] = React.useState(
+    responsibility
+      ? responsibility[0]?.data
+        ? responsibility[0]?.data
+        : []
+      : []
+  );
+  console.log(descriptionDetails, "descriptionDetails");
   const {
     control,
     handleSubmit,
@@ -32,22 +45,21 @@ const ResponsibilitiesPage = ({ modalVisible, setModalVisible }) => {
   });
 
   const onSubmit = async (data) => {
-    console.log("onSubmit called");
-    console.log(data);
     const { description } = data;
-    console.log(description);
     reset();
-    setDescriptionDetails((prev) => [
-      ...prev,
-      {
-        id: Crypto.randomUUID(),
-        description,
-      },
-    ]);
+    let currentDetails = descriptionDetails;
+    let newDescription = {
+      id: Crypto.randomUUID(),
+      description,
+    };
+    setDescriptionDetails((prev) => [...prev, newDescription]);
+    currentDetails = [...currentDetails, newDescription];
+    dispatch(updateDetails({ id: params.id, newData: currentDetails }));
   };
 
   const deleteDescription = (id) => {
     let newDescription = descriptionDetails.filter((item) => item.id != id);
+    dispatch(updateDetails({ id: params.id, newData: newDescription }));
     setDescriptionDetails(newDescription);
   };
 
@@ -57,7 +69,9 @@ const ResponsibilitiesPage = ({ modalVisible, setModalVisible }) => {
       <SafeAreaView style={[styles.homeContainer, styles.mtop]}>
         <View style={styles.formContainer}>
           <View style={styles.marginVertical}>
-            <Text>Add Work Experience</Text>
+            <Text style={styles.textAlign}>
+              Add Work Experience For {params.company}
+            </Text>
           </View>
           <FormField
             name="description"
@@ -65,8 +79,6 @@ const ResponsibilitiesPage = ({ modalVisible, setModalVisible }) => {
             errors={errors}
             placeholder="Improved API efficiency by 30%"
           />
-          {/* <View> */}
-          {/* </View> */}
         </View>
         <Button
           title="Next"
@@ -78,17 +90,8 @@ const ResponsibilitiesPage = ({ modalVisible, setModalVisible }) => {
           {descriptionDetails.map((item) => {
             return (
               <View key={item.id}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    gap: 4,
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {/* <Input value={item?.description} /> */}
+                <View style={styles.descriptionSingleItem}>
                   <Text style={{ padding: 20 }}>{item?.description}</Text>
-
                   <TouchableHighlight
                     onPress={() => deleteDescription(item.id)}
                   >

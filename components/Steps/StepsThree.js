@@ -15,11 +15,11 @@ import styles from "../../assets/styles/style";
 import Input from "../common/Input";
 import * as Crypto from "expo-crypto";
 import { router } from "expo-router";
+import { addexperience } from "../../store/slices/experience";
 
 const StepsThree = () => {
-  const [experience, setExperience] = React.useState([]);
-  const [modalVisible, setModalVisible] = React.useState(false);
-  const [id, setId] = React.useState("");
+  const { value: experienceState } = useSelector((state) => state.experience);
+  const [experience, setExperience] = React.useState(experienceState);
   const dispatch = useDispatch();
   const {
     control,
@@ -34,40 +34,36 @@ const StepsThree = () => {
 
   const onSubmit = async (data) => {
     const { company, role, location, date } = data;
-    setExperience((prev) => [
-      ...prev,
-      {
-        id: Crypto.randomUUID(),
-        company,
-        role,
-        location,
-        date,
-      },
-    ]);
+    let experienceDetails = experience;
+    const newExperience = {
+      id: Crypto.randomUUID(),
+      company,
+      role,
+      location,
+      date,
+    };
+    setExperience((prev) => [...prev, newExperience]);
+    experienceDetails = [...experienceDetails, newExperience];
+    dispatch(addexperience(experienceDetails));
     reset();
-  };
-
-  const addDescriptionToExperience = (id, data) => {
-    const existingExp = experience().find((exp) => exp.id === id);
-    const withoutCurrent = experience.filter((item)=>item.id!== id)
-    if (existingExp) {
-      existingExp.description = data;
-    } else {
-      setExperience((prev) => [
-        ...prev,
-        { ...newExp, description: newDescription },
-      ]);
-    }
-  };
-
-  const addExperience = async (id) => {
-    setModalVisible(true);
-    setId(id);
   };
 
   const deleteExperience = (id) => {
     let newCourses = experience.filter((item) => item.id != id);
     setExperience(newCourses);
+    dispatch(addexperience(newCourses));
+  };
+
+  const addExperience = async () => {
+    let data = {
+      uuid: value?.user?.uuid,
+      step_three: experience,
+    };
+    // resumeServices.createStep
+    let response = await resumeServices.createStep({ ...data });
+    if (response.status) {
+      dispatch(addStep({ key: "step_three" }));
+    }
   };
 
   return (
@@ -95,32 +91,40 @@ const StepsThree = () => {
         onPress={() => handleSubmit(onSubmit)()}
       />
       <View style={{ marginVertical: 10 }}>
-        {experience.map((item) => {
-          return (
-            <View key={item.id}>
-              <Input value={item?.company} />
-              <Input value={item?.role} />
-              <Input value={item?.location} />
-              <Input value={item?.date} />
-              <Button
-                title="Add Responsibilities"
-                onPress={() => router.push(`${item.id}`)}
-              />
-              <Button
-                title={
-                  <AntDesign
-                    name="delete"
-                    size={24}
-                    color="black"
-                    //
-                  />
-                }
-                onPress={() => deleteExperience(item.id)}
-              />
-              <Text>{"\n"}</Text>
-            </View>
-          );
-        })}
+        {experience &&
+          experience.map((item) => {
+            return (
+              <View key={item.id}>
+                <Input value={item?.company} />
+                <Input value={item?.role} />
+                <Input value={item?.location} />
+                <Input value={item?.date} />
+                <Button
+                  title="Add Responsibilities"
+                  onPress={() =>
+                    router.push({
+                      pathname: item?.id,
+                      params: {
+                        company: item?.company,
+                      },
+                    })
+                  }
+                />
+                <Button
+                  title={
+                    <AntDesign
+                      name="delete"
+                      size={24}
+                      color="black"
+                      //
+                    />
+                  }
+                  onPress={() => deleteExperience(item.id)}
+                />
+                <Text>{"\n"}</Text>
+              </View>
+            );
+          })}
       </View>
       <View>
         <Button title="Next" type="submit" onPress={addExperience} />

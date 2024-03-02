@@ -102,6 +102,19 @@ const styles = StyleSheet.create({
   marginVertical: {
     marginVertical: 8,
   },
+  textAlign: {
+    textAlign: "center",
+  },
+  mHorizontal: {
+    marginHorizontal: 8,
+  },
+  descriptionSingleItem: {
+    flexDirection: "row",
+    gap: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 8,
+  },
 });
 
 export default styles;

@@ -9,6 +9,7 @@ import CustomKeyboardView from "../components/common/CustomKeyboardView";
 import StepTwo from "../components/Steps/StepTwo.js";
 import StepsThree from "../components/Steps/StepsThree.js";
 import { Redirect } from "expo-router";
+import StepFour from "../components/Steps/StepFour.js";
 
 const Home = () => {
   const stepDetails = useSelector((state) => state.step);
@@ -24,8 +25,10 @@ const Home = () => {
             <StepOne />
           ) : !stepDetails?.value.step_two ? (
             <StepTwo />
-          ) : (
+          ) : !stepDetails?.value.step_three ? (
             <StepsThree />
+          ) : (
+            <StepFour />
           )}
         </View>
       </SafeAreaView>

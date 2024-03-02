@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "@reduxjs/toolkit";
 import userSlice from "./slices/user";
 import stepSlice from "./slices/steps";
+import experienceSlice from "./slices/experience";
 import {
   persistReducer,
   persistStore,
@@ -17,12 +18,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const persistConfig = {
   storage: AsyncStorage,
   key: "root",
-  whitelist: ["user", "step"],
+  whitelist: ["user", "step", "experience"],
 };
 
 const rootReducer = combineReducers({
   user: userSlice,
   step: stepSlice,
+  experience: experienceSlice,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
