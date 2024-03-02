@@ -2,7 +2,7 @@ import { Text, View, ToastAndroid } from "react-native";
 import steps from "../../data/steps";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import stepTwoSchema from "../../utils/validators/stepTwo";
+import stepFourSchema from "../../utils/validators/stepFour";
 import FormField from "../common/FormField";
 import Button from "../common/Button";
 import { useSelector, useDispatch } from "react-redux";
@@ -15,8 +15,8 @@ import styles from "../../assets/styles/style";
 import Input from "../common/Input";
 import * as Crypto from "expo-crypto";
 
-const StepTwo = () => {
-  const [courses, setCourses] = React.useState([]);
+const StepFour = () => {
+  const [projects, setProjects] = React.useState([]);
   const dispatch = useDispatch();
   const {
     control,
@@ -24,51 +24,49 @@ const StepTwo = () => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(stepTwoSchema),
+    resolver: yupResolver(stepFourSchema),
   });
 
   const { value } = useSelector((state) => state.user);
 
   const onSubmit = async (data) => {
-    const { collegeCourse, collegeName, location, year } = data;
+    const { projectName, projectDescription } = data;
     reset();
-    setCourses((prev) => [
+    setProjects((prev) => [
       ...prev,
       {
         id: Crypto.randomUUID(),
-        collegeCourse,
-        collegeName,
-        location,
-        year,
+        projectName,
+        projectDescription,
       },
     ]);
   };
 
-  const addCourse = async () => {
+  const addProject = async () => {
     if (courses.length <= 0) {
       ToastAndroid.show("Please Add Courses..!", ToastAndroid.SHORT);
       return;
     } else {
       let data = {
         uuid: value?.user?.uuid,
-        step_two: courses,
+        step_four: projects,
       };
       // resumeServices.createStep
       let response = await resumeServices.createStep({ ...data });
       if (response.status) {
-        dispatch(addStep({ key: "step_two" }));
+        dispatch(addStep({ key: "step_four" }));
       }
     }
   };
 
   const deleteCourse = (id) => {
-    let newCourses = courses.filter((item) => item.id != id);
-    setCourses(newCourses);
+    let newProject = projects.filter((item) => item.id != id);
+    setCourses(newProject);
   };
 
   return (
     <View>
-      {steps.two.map((item, index) => {
+      {steps.four.map((item, index) => {
         return (
           <FormField
             name={item.name}
@@ -91,13 +89,11 @@ const StepTwo = () => {
         onPress={() => handleSubmit(onSubmit)()}
       />
       <View style={{ marginVertical: 10 }}>
-        {courses.map((item) => {
+        {projects.map((item) => {
           return (
             <View key={item.id}>
-              <Input value={item?.collegeName} />
-              <Input value={item?.collegeCourse} />
-              <Input value={item?.location} />
-              <Input value={item?.year} />
+              <Input value={item?.projectName} />
+              <Input value={item?.projectDescription} />
               <Button
                 title={
                   <AntDesign
@@ -115,7 +111,7 @@ const StepTwo = () => {
         })}
       </View>
       <View>
-        <Button title="Next" type="submit" onPress={addCourse} />
+        <Button title="Next" type="submit" onPress={addProject} />
         <Button title="Previous" />
       </View>
       <SignOut />
@@ -123,4 +119,4 @@ const StepTwo = () => {
   );
 };
 
-export default StepTwo;
+export default StepFour;

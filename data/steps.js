@@ -43,6 +43,28 @@ const steps = {
       placeholder: "2019 - Present",
     },
   ],
+  three: [
+    {
+      name: "company",
+      placeholder: "Company",
+    },
+    {
+      name: "role",
+      placeholder: "Role",
+    },
+    {
+      name: "location",
+      placeholder: "bangalore,india",
+    },
+    {
+      name: "date",
+      placeholder: "2019 January - Present",
+    },
+  ],
+  four: [
+    { name: "projectName", placeholder: "Project Name" },
+    { name: "projectDescription", placeholder: "Project Description" },
+  ],
 };
 
 export default steps;

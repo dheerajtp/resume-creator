@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Light",
   },
   mtop: {
-    marginVertical: 4,
+    marginVertical: 6,
   },
   loginLogo: {
     width: "100%",
@@ -98,6 +98,22 @@ const styles = StyleSheet.create({
   coursesText: {
     textAlign: "center",
     padding: 4,
+  },
+  marginVertical: {
+    marginVertical: 8,
+  },
+  textAlign: {
+    textAlign: "center",
+  },
+  mHorizontal: {
+    marginHorizontal: 8,
+  },
+  descriptionSingleItem: {
+    flexDirection: "row",
+    gap: 4,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 8,
   },
 });
 

@@ -5,9 +5,12 @@ const Input = ({ value }) => {
   return (
     <TextInput
       style={styles.input}
+      multiline
       value={value}
       editable={false}
       selectTextOnFocus={false}
+      numberOfLines={4}
+      maxLength={300}
     />
   );
 };

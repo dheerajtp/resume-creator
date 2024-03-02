@@ -15,7 +15,6 @@ const createStep = async ({
     let result = await get(child(dbRef, `steps/${uuid}`));
 
     if (!result.exists()) {
-      console.log("inside results doesn't exist");
       await set(ref(firebaseConfigurations.database, "steps/" + uuid), {
         uuid,
         step_one,

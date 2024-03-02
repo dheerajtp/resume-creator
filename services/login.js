@@ -9,14 +9,14 @@ const createUser = async (
   lastName
 ) => {
   try {
-    const uuid = Crypto.randomUUID();
+    let uuid = Crypto.randomUUID();
     const dbRef = ref(firebaseConfigurations.database);
     let result = await get(child(dbRef, `users/${firstName} ${lastName}`));
     if (!result.exists()) {
       set(
         ref(
           firebaseConfigurations.database,
-          "users/" + ` ${firstName} ${lastName}`
+          "users/" + `${firstName} ${lastName}`
         ),
         {
           name: `${firstName} ${lastName}`,
@@ -25,13 +25,18 @@ const createUser = async (
           uuid,
         }
       );
+    } else {
+      const userData = result.val();
+      console.info(" === user data details === ");
+      console.info(userData);
+      console.info(" === user data details === ");
+      uuid = userData.uuid;
     }
     return {
       status: true,
       uuid,
     };
   } catch (error) {
-    console.error(error);
     return { status: false };
   }
 };
