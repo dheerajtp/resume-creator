@@ -6,6 +6,8 @@ const initialState = {
     step_two: false,
     step_three: false,
     step_four: false,
+    step_five: false,
+    step_six: false,
   },
 };
 

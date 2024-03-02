@@ -115,6 +115,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginHorizontal: 8,
   },
+  textContent:{
+    fontSize: 12,
+    lineHeight: 12,
+    padding: 5,
+    paddingHorizontal: 10,
+    display: "flex",
+    // height: hp(30),
+    marginBottom: 8,
+    width: wp("80%"),
+    textAlign:"center"
+  }
 });
 
 export default styles;

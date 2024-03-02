@@ -16,9 +16,9 @@ import Input from "../common/Input";
 import * as Crypto from "expo-crypto";
 import { addproject } from "../../store/slices/projects";
 
-const StepFour = () => {
+const StepFive = () => {
   const { value: projectDetails } = useSelector((state) => state.project);
-  const [projects, setProjects] = React.useState(projectDetails);
+  const [achievements, setAchievements] = React.useState(projectDetails);
   const dispatch = useDispatch();
   const {
     control,
@@ -41,7 +41,7 @@ const StepFour = () => {
       projectDescription,
       tech,
     };
-    setProjects((prev) => [...prev, newProject]);
+    setAchievements((prev) => [...prev, newProject]);
     currentProjects = [...currentProjects, newProject];
     dispatch(addproject(currentProjects));
   };
@@ -49,12 +49,11 @@ const StepFour = () => {
   const addProject = async () => {
     let data = {
       uuid: value?.user?.uuid,
-      step_four: projects,
+      step_five: achievements,
     };
-    console.info(data)
     let response = await resumeServices.createStep({ ...data });
     if (response.status) {
-      dispatch(addStep({ key: "step_four" }));
+      dispatch(addStep({ key: "step_five" }));
     }
   };
 
@@ -65,7 +64,7 @@ const StepFour = () => {
 
   return (
     <View>
-      {steps.four.map((item, index) => {
+      {steps.five.map((item, index) => {
         return (
           <FormField
             name={item.name}
@@ -88,7 +87,7 @@ const StepFour = () => {
         onPress={() => handleSubmit(onSubmit)()}
       />
       <View style={{ marginVertical: 10 }}>
-        {projects.map((item) => {
+        {achievements.map((item) => {
           return (
             <View key={item.id} style={{ padding: 10 }}>
               <Input value={item?.projectName} />
@@ -121,4 +120,4 @@ const StepFour = () => {
   );
 };
 
-export default StepFour;
+export default StepFive;

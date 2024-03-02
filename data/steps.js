@@ -64,7 +64,9 @@ const steps = {
   four: [
     { name: "projectName", placeholder: "Project Name" },
     { name: "projectDescription", placeholder: "Project Description" },
+    { name: "tech", placeholder: "Tech" },
   ],
+  five: [{ name: "achievement", placeholder: "Achievements" }],
 };
 
 export default steps;
