@@ -54,6 +54,7 @@ const Login = () => {
         ToastAndroid.show("Login Failed..!", ToastAndroid.SHORT);
       }
     } catch (err) {
+      console.error(err.message)
       ToastAndroid.show(
         "Some Error Occured. Please Try Again!",
         ToastAndroid.SHORT

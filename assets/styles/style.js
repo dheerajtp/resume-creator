@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     fontFamily: "Roboto-Light",
   },
   mtop: {
-    marginVertical: 4,
+    marginVertical: 6,
   },
   loginLogo: {
     width: "100%",

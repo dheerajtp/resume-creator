@@ -14,7 +14,7 @@ import { FontAwesome6, AntDesign, MaterialIcons } from "@expo/vector-icons";
 import styles from "../../assets/styles/style";
 import Input from "../common/Input";
 import * as Crypto from "expo-crypto";
-import Responsibilities from "./Responsibilities";
+import { router } from "expo-router";
 
 const StepsThree = () => {
   const [experience, setExperience] = React.useState([]);
@@ -33,8 +33,6 @@ const StepsThree = () => {
   const { value } = useSelector((state) => state.user);
 
   const onSubmit = async (data) => {
-    console.log("onSubmit called");
-    console.log(data);
     const { company, role, location, date } = data;
     setExperience((prev) => [
       ...prev,
@@ -47,6 +45,19 @@ const StepsThree = () => {
       },
     ]);
     reset();
+  };
+
+  const addDescriptionToExperience = (id, data) => {
+    const existingExp = experience().find((exp) => exp.id === id);
+    const withoutCurrent = experience.filter((item)=>item.id!== id)
+    if (existingExp) {
+      existingExp.description = data;
+    } else {
+      setExperience((prev) => [
+        ...prev,
+        { ...newExp, description: newDescription },
+      ]);
+    }
   };
 
   const addExperience = async (id) => {
@@ -93,15 +104,8 @@ const StepsThree = () => {
               <Input value={item?.date} />
               <Button
                 title="Add Responsibilities"
-                onPress={() => addExperience(item.id)}
+                onPress={() => router.push(`${item.id}`)}
               />
-              <Responsibilities
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                id={id}
-                setId={setId}
-              />
-
               <Button
                 title={
                   <AntDesign

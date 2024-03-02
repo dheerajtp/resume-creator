@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import SignOut from "../common/SignOut";
 import resumeServices from "../../services/resume";
 import { addStep } from "../../store/slices/steps";
+import { Redirect } from "expo-router";
 
 const StepOne = () => {
   const dispatch = useDispatch();
@@ -20,8 +21,8 @@ const StepOne = () => {
     resolver: yupResolver(stepOneSchema),
   });
 
-  const { value } = useSelector((state) => state.user);
-  
+  const userDetails = useSelector((state) => state.user);
+  console.log(userDetails.value, "user details goes here step one");
   const onSubmit = async (data) => {
     const {
       firstName,
@@ -32,7 +33,7 @@ const StepOne = () => {
       linkedInUrl = "",
     } = data;
     let valueTyped = {
-      uuid: value?.user?.uuid,
+      uuid: userDetails?.value?.user?.uuid,
       step_one: {
         firstName,
         lastName,
@@ -49,23 +50,27 @@ const StepOne = () => {
     }
   };
 
-  return (
-    <View>
-      {steps.one.map((item, index) => {
-        return (
-          <FormField
-            name={item.name}
-            control={control}
-            errors={errors}
-            placeholder={item.placeholder}
-            key={index}
-          />
-        );
-      })}
-      <Button title="Next" onPress={handleSubmit(onSubmit)} />
-      <SignOut />
-    </View>
-  );
+  if (!userDetails) {
+    return <Redirect href="/login" />;
+  } else {
+    return (
+      <View>
+        {steps.one.map((item, index) => {
+          return (
+            <FormField
+              name={item.name}
+              control={control}
+              errors={errors}
+              placeholder={item.placeholder}
+              key={index}
+            />
+          );
+        })}
+        <Button title="Next" onPress={handleSubmit(onSubmit)} />
+        <SignOut />
+      </View>
+    );
+  }
 };
 
 export default StepOne;

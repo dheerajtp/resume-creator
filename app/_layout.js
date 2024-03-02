@@ -2,7 +2,9 @@ import { ClerkProvider } from "@clerk/clerk-expo";
 import { Slot } from "expo-router";
 import tokenCache from "../utils/token";
 import { Provider } from "react-redux";
-import store from "../store/store";
+// import store from "../store/store";
+import { persistor, store } from "../store/store";
+import { PersistGate } from "redux-persist/integration/react";
 import { ModalPortal } from "react-native-modals";
 
 const HomeLayout = () => {
@@ -12,8 +14,10 @@ const HomeLayout = () => {
       tokenCache={tokenCache}
     >
       <Provider store={store}>
-        <Slot />
-        <ModalPortal />
+        <PersistGate persistor={persistor} loading={null}>
+          <Slot />
+          <ModalPortal />
+        </PersistGate>
       </Provider>
     </ClerkProvider>
   );
