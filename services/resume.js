@@ -9,7 +9,14 @@ const createStep = async ({
   step_four = {},
 }) => {
   try {
-    const steps = { step_one, step_two, step_three, step_four };
+    const steps = {
+      step_one,
+      step_two,
+      step_three,
+      step_four,
+      step_five,
+      step_six,
+    };
 
     const dbRef = ref(firebaseConfigurations.database);
     let result = await get(child(dbRef, `steps/${uuid}`));
@@ -21,6 +28,8 @@ const createStep = async ({
         step_two,
         step_three,
         step_four,
+        step_five,
+        step_six,
       });
     } else {
       const data = result.val();

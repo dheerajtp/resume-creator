@@ -11,6 +11,7 @@ import StepsThree from "../components/Steps/StepsThree.js";
 import { Redirect } from "expo-router";
 import StepFour from "../components/Steps/StepFour.js";
 import StepFive from "../components/Steps/StepFive.js";
+import StepSix from "../components/Steps/StepSix.js";
 
 const Home = () => {
   const stepDetails = useSelector((state) => state.step);
@@ -30,8 +31,12 @@ const Home = () => {
             <StepsThree />
           ) : !stepDetails?.value.step_four ? (
             <StepFour />
-          ) : (
+          ) : !stepDetails?.value.step_five ? (
             <StepFive />
+          ) : !stepDetails?.value.step_six ? (
+            <StepSix />
+          ) : (
+            <Redirect href="/preview" />
           )}
         </View>
       </SafeAreaView>

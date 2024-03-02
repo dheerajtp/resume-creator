@@ -2,7 +2,7 @@ import { Text, View, ToastAndroid } from "react-native";
 import steps from "../../data/steps";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import stepFiveSchema from "../../utils/validators/stepFive";
+import stepSixSchema from "../../utils/validators/stepSix";
 import FormField from "../common/FormField";
 import Button from "../common/Button";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,15 +12,12 @@ import { addStep } from "../../store/slices/steps";
 import React from "react";
 import { FontAwesome6, AntDesign } from "@expo/vector-icons";
 import styles from "../../assets/styles/style";
-import Input from "../common/Input";
 import * as Crypto from "expo-crypto";
-import { addproject } from "../../store/slices/projects";
+import { addskills } from "../../store/slices/skills";
 
-const StepFive = () => {
-  const { value: achievementDetails } = useSelector(
-    (state) => state.achievements
-  );
-  const [achievements, setAchievements] = React.useState(achievementDetails);
+const StepSix = () => {
+  const { value: skillsDetails } = useSelector((state) => state.skills);
+  const [skills, setSkills] = React.useState(skillsDetails);
   const dispatch = useDispatch();
   const {
     control,
@@ -28,45 +25,44 @@ const StepFive = () => {
     formState: { errors },
     reset,
   } = useForm({
-    resolver: yupResolver(stepFiveSchema),
+    resolver: yupResolver(stepSixSchema),
   });
 
   const { value } = useSelector((state) => state.user);
 
   const onSubmit = async (data) => {
-    const { achievement, achievementDescription = null } = data;
+    const { skill } = data;
     reset();
-    let currentAchievement = achievements;
-    const newAchievement = {
+    let currentSkills = skills;
+    const newSkill = {
       id: Crypto.randomUUID(),
-      achievement,
-      achievementDescription,
+      skill,
     };
-    setAchievements((prev) => [...prev, newAchievement]);
-    currentAchievement = [...currentAchievement, newAchievement];
-    dispatch(addproject(currentAchievement));
+    setSkills((prev) => [...prev, newSkill]);
+    currentSkills = [...currentSkills, newSkill];
+    dispatch(addskills(currentSkills));
   };
 
   const addProject = async () => {
     let data = {
       uuid: value?.user?.uuid,
-      step_five: achievements,
+      step_six: skills,
     };
     let response = await resumeServices.createStep({ ...data });
     if (response.status) {
-      dispatch(addStep({ key: "step_five" }));
+      dispatch(addStep({ key: "step_six" }));
     }
   };
 
   const deleteCourse = (id) => {
-    let newAchievements = achievements.filter((item) => item.id != id);
-    setAchievements(newAchievements);
-    dispatch(addproject(newAchievements));
+    let newskills = skills.filter((item) => item.id != id);
+    setSkills(newskills);
+    dispatch(addskills(newskills));
   };
 
   return (
     <View>
-      {steps.five.map((item, index) => {
+      {steps.six.map((item, index) => {
         return (
           <FormField
             name={item.name}
@@ -89,15 +85,10 @@ const StepFive = () => {
         onPress={() => handleSubmit(onSubmit)()}
       />
       <View style={{ marginVertical: 10 }}>
-        {achievements.map((item) => {
+        {skills.map((item) => {
           return (
             <View key={item.id} style={{ padding: 10 }}>
-              <Text style={styles.textContent}>{item?.achievement}</Text>
-              {item.achievementDescription && (
-                <Text style={styles.textContent}>
-                  {item?.achievementDescription}
-                </Text>
-              )}
+              <Text style={styles.textContent}>{item?.skill}</Text>
               <Button
                 title={
                   <AntDesign
@@ -123,4 +114,4 @@ const StepFive = () => {
   );
 };
 
-export default StepFive;
+export default StepSix;

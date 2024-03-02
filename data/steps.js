@@ -66,7 +66,11 @@ const steps = {
     { name: "projectDescription", placeholder: "Project Description" },
     { name: "tech", placeholder: "Tech" },
   ],
-  five: [{ name: "achievement", placeholder: "Achievements" }],
+  five: [
+    { name: "achievement", placeholder: "Achievements" },
+    { name: "achievementDescription", placeholder: "Achievements Description" },
+  ],
+  six: [{ name: "skill", placeholder: "Enter Your Skills" }],
 };
 
 export default steps;

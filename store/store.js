@@ -5,6 +5,7 @@ import stepSlice from "./slices/steps";
 import experienceSlice from "./slices/experience";
 import projectSlice from "./slices/projects";
 import achievementsSlice from "./slices/achievements";
+import skillsSlice from "./slices/skills";
 
 import {
   persistReducer,
@@ -21,7 +22,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const persistConfig = {
   storage: AsyncStorage,
   key: "root",
-  whitelist: ["user", "step", "experience", "project", "achievements"],
+  whitelist: [
+    "user",
+    "step",
+    "experience",
+    "project",
+    "achievements",
+    "skills",
+  ],
 };
 
 const rootReducer = combineReducers({
@@ -30,6 +38,7 @@ const rootReducer = combineReducers({
   experience: experienceSlice,
   project: projectSlice,
   achievements: achievementsSlice,
+  skills: skillsSlice,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
