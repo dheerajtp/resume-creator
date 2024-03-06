@@ -10,15 +10,19 @@ import SignOut from "../common/SignOut";
 import resumeServices from "../../services/resume";
 import { addStep } from "../../store/slices/steps";
 import { Redirect } from "expo-router";
+import { addprofile } from "../../store/slices/profile";
 
 const StepOne = () => {
   const dispatch = useDispatch();
+  const profileDetails = useSelector((state) => state.profile.value);
+  console.log(profileDetails, "profileDetails");
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(stepOneSchema),
+    defaultValues: profileDetails,
   });
 
   const userDetails = useSelector((state) => state.user);
@@ -47,6 +51,16 @@ const StepOne = () => {
     let response = await resumeServices.createStep({ ...valueTyped });
     if (response.status) {
       dispatch(addStep({ key: "step_one" }));
+      dispatch(
+        addprofile({
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          githubUrl,
+          linkedInUrl,
+        })
+      );
     }
   };
 

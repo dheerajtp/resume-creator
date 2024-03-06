@@ -6,6 +6,8 @@ import experienceSlice from "./slices/experience";
 import projectSlice from "./slices/projects";
 import achievementsSlice from "./slices/achievements";
 import skillsSlice from "./slices/skills";
+import profileSlice from "./slices/profile";
+import collegeSlice from "./slices/college";
 
 import {
   persistReducer,
@@ -29,6 +31,8 @@ const persistConfig = {
     "project",
     "achievements",
     "skills",
+    "profile",
+    "colleges",
   ],
 };
 
@@ -39,6 +43,8 @@ const rootReducer = combineReducers({
   project: projectSlice,
   achievements: achievementsSlice,
   skills: skillsSlice,
+  profile: profileSlice,
+  colleges: collegeSlice,
 });
 
 export const persistedReducer = persistReducer(persistConfig, rootReducer);
