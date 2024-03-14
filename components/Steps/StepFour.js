@@ -60,7 +60,7 @@ const StepFour = () => {
 
   const deleteCourse = (id) => {
     let newProject = projects.filter((item) => item.id != id);
-    setCourses(newProject);
+    setProjects(newProject);
   };
 
   return (

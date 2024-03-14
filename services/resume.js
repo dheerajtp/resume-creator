@@ -7,6 +7,8 @@ const createStep = async ({
   step_two = {},
   step_three = {},
   step_four = {},
+  step_five = {},
+  step_six = {},
 }) => {
   try {
     const steps = {

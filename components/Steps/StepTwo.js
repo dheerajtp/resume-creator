@@ -14,6 +14,7 @@ import { FontAwesome6, AntDesign } from "@expo/vector-icons";
 import styles from "../../assets/styles/style";
 import Input from "../common/Input";
 import * as Crypto from "expo-crypto";
+import { addcolleges } from "../../store/slices/college";
 
 const StepTwo = () => {
   const [courses, setCourses] = React.useState([]);
@@ -53,10 +54,14 @@ const StepTwo = () => {
         uuid: value?.user?.uuid,
         step_two: courses,
       };
-      // resumeServices.createStep
       let response = await resumeServices.createStep({ ...data });
       if (response.status) {
         dispatch(addStep({ key: "step_two" }));
+        dispatch(
+          addcolleges({
+            courses,
+          })
+        );
       }
     }
   };

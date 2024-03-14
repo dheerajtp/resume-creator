@@ -15,15 +15,13 @@ import StepSix from "../components/Steps/StepSix.js";
 
 const Home = () => {
   const stepDetails = useSelector((state) => state.step);
-  console.log(stepDetails, "stepDetails");
+  console.info(stepDetails, "stepDetails");
   return (
     <CustomKeyboardView>
       <SafeAreaView style={styles.homeContainer}>
         <Header />
         <View style={styles.formContainer}>
-          {!stepDetails ? (
-            <StepOne />
-          ) : !stepDetails?.value.step_one ? (
+          {!stepDetails?.value.step_one ? (
             <StepOne />
           ) : !stepDetails?.value.step_two ? (
             <StepTwo />

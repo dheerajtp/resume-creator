@@ -15,7 +15,6 @@ import { addprofile } from "../../store/slices/profile";
 const StepOne = () => {
   const dispatch = useDispatch();
   const profileDetails = useSelector((state) => state.profile.value);
-  console.log(profileDetails, "profileDetails");
   const {
     control,
     handleSubmit,
@@ -26,8 +25,8 @@ const StepOne = () => {
   });
 
   const userDetails = useSelector((state) => state.user);
-  console.log(userDetails.value, "user details goes here step one");
   const onSubmit = async (data) => {
+    console.log(" on submit ")
     const {
       firstName,
       lastName,
@@ -49,6 +48,7 @@ const StepOne = () => {
     };
 
     let response = await resumeServices.createStep({ ...valueTyped });
+    console.info("response",response)
     if (response.status) {
       dispatch(addStep({ key: "step_one" }));
       dispatch(

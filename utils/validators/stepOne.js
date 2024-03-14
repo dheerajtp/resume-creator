@@ -10,6 +10,7 @@ const stepOneSchema = yup.object().shape({
   phoneNumber: yup.string().required("Phone Number Is Required"),
   githubUrl: yup
     .string()
+    .nullable()
     .matches(
       /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
       "Enter correct url!"
@@ -17,6 +18,7 @@ const stepOneSchema = yup.object().shape({
     .optional(),
   linkedInUrl: yup
     .string()
+    .nullable()
     .matches(
       /((https?):\/\/)?(www.)?[a-z0-9]+(\.[a-z]{2,}){1,3}(#?\/?[a-zA-Z0-9#]+)*\/?(\?[a-zA-Z0-9-_]+=[a-zA-Z0-9-%]+&?)?$/,
       "Enter correct url!"
